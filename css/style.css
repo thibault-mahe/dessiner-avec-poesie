@@ -1,0 +1,183 @@
+
+/* ---------------------------------------------------------------- */
+    /* GENERAL */
+/* ---------------------------------------------------------------- */
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  overflow: hidden;
+}
+canvas {
+  cursor: crosshair;
+  /* Lors du développement, mettre une bordure rouge sur le canvas permet de bien cerner celui-ci. */
+  /* border:1px solid red; */ 
+  z-index:10; /* Un jeu sur les z-index permet de dessiner sur les boutons sans que cela empêche de les cliquer.*/
+  margin-top:0;
+}
+span#nettoyage { 
+  display:none; /* Par défaut masqué, il apparaît au double-click, lorsque le canvas est nettoyé, pour afficher le message de nettoyage. */
+  font-family: 'Georgia', cursive;
+  font-size: 40px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  color: #000;
+  margin-top: -40px;
+  margin-left: -80px; /* L'élément fait 160px de long. Pour le centrer il suffit donc de le place à 50% de la gauche puis de
+  le décaler dans le sens inverse de la moitié de sa taille*/
+}
+
+/* ---------------------------------------------------------------- */
+    /* BOUTONS DE L'INTERFACE */
+/* ---------------------------------------------------------------- */
+
+/* Par défaut, les boutons de l'interface (#editControls) et le paragraphe d'explication sont fixés */
+p {
+  z-index:-10;
+  top:5px;
+  left:300px;
+  position:fixed;
+}
+#editControls {
+  top:15px;
+  left:10px;
+  z-index:20;
+  position:fixed;
+}
+/* L'ajout d'une bordure argenté, d'une ombre pour donner du relief et de bords arrondis permet de se
+  rapprocher de la forme physique d'un vrai bouton*/
+#editControls .btn {
+  text-decoration:none;
+  border:1px solid silver;
+  border-radius:5px;
+  box-shadow: inset 0 0 10px silver;
+  background: white;
+  margin: 0 auto;
+  padding:10px;
+}
+#editControls .btn:hover {
+  cursor:pointer;
+}
+/* Chaque bouton a un background correspondant à la couleur qu'il permet d'activer */
+#editControls .btn:nth-child(1) {
+  background-color: #e63157;
+  color:#DDD;
+}
+#editControls .btn:nth-child(2) {
+  background-color: #235e75;
+  color:#CCC;
+}
+#editControls .btn:nth-child(3) {
+  background-color: #ffd56c;
+  color:#666;
+}
+#editControls .btn:nth-child(4) {
+  background-color: #80ccad;
+  color:#666;
+}
+#editControls .btn:nth-child(5) {
+  background-color: black;
+  color:#DDD;
+}
+/* Bouton "Modifier le texte" */
+#editControls #modify {
+  right:10px;
+  position:fixed;
+  top:5px;
+  color:black;
+}
+/* Bouton "Sauvegarder" */
+#editControls #submit {
+  right:10px;
+  position:fixed;
+  top:50px;
+  color:black;
+}
+
+/* ---------------------------------------------------------------- */
+    /* BOÎTE MODALE (POP IN) */
+/* ---------------------------------------------------------------- */
+
+/* La boîte modale, qui apparaît pour modifier le texte, est en fait une div classique "habillée" de la même manière que les boutons (pour
+   une cohérence esthtéique) et placé en dehors de l'interface, sur sa droite. Au clic, c'est la valeur du right qui est changé. Une animation
+   est précisée afin de rendre plus agréable l'utilisation de l'interface.
+   Display:none fait disparaitre du DOM l'élement, donc il n'aurait pas été possible de prendre en compte ce qu'il contient pour changer le texte.
+   Visibility:hidden maintient l'élément présent sur le canvas, donc il n'aurait pas été possible de dessiner dessus. 
+   La solution de placer l'élément hors du cadre a donc été préféré. */
+#modal {
+  width:500px;
+  min-height:400px;
+  position:fixed;
+  top:20px;
+  margin-right:50%;
+  right:-2500px;
+  z-index:50;
+  border:1px solid silver;
+  border-radius:5px;
+  box-shadow: inset 0 0 10px silver;
+  background: white;
+  transition: all 0.5s linear 0s;
+}
+/* Dans la boîte modale : messages explicatifs (choix de la strophe et édition du texte) */
+#pres, #select-strophe {
+  padding:10px 10px;
+  font-style: italic;
+}
+/* Dans la boîte modale : édition du texte */
+#edit {
+  min-height:190px;
+  border:1px solid black;
+  margin:10px;
+  border-radius:5px;
+  padding:5px;
+}
+/* Dans la boîte modale : choix des strophes */
+#modal .btn-group1 .btn {
+  text-decoration:none;
+  border:1px solid silver;
+  border-radius:5px;
+  box-shadow: inset 0 0 10px silver;
+  background: grey;
+  padding:5px;
+  color:white;
+  width:20px;
+  margin:0;
+  float:left; /* Permet de sortir les boutons du flux et de les mettre à la suite sur une même ligne. */
+  text-align:center;
+}
+/* Les éléments placés à la suite d'éléments flottants (float, donc sortis du flux) se plaçent et se comportent en fonction de ces éléments, en 
+ se placant à leur suite et en prenant la place qu'il reste. Il est donc primordial de restaurer un flux "normal" après les éléments sortis du flux,
+ c'est-à-dire de faire en sorte que les éléments suivant agissent comme si les éléments précédants n'étaient pas flottants. 
+ D'où l'utilisation de l'attribut clear:both, placé ici après le groupe d'éléments flottants. */
+#modal .btn-group1:after {
+   content: " "; /* Les navigateurs plus anciens ne supportent pas des contenus vides. */
+   visibility: hidden;
+   display: block;
+   height: 0;
+   clear: both;
+}
+#modal .btn-group1 {
+    margin:0 0 0 10px;
+}
+#modal .btn-group1 .btn.selected {
+  background: black;
+}
+/* Dans la boîte modale : boutons de fin de boîte modale (Annuler / Terminer) */
+#modal .btn-group2 {
+    margin:20px 0 0 300px;
+}
+#modal .btn-group2 .btn {
+  text-decoration:none;
+  border:1px solid silver;
+  border-radius:5px;
+  box-shadow: inset 0 0 10px silver;
+  background: grey;
+  padding:10px;
+  color:white;
+}
+#modal .btn-group2 .btn:nth-child(1) { /* (distinguer le bouton "Annuler" du bouton "Terminer") */  
+  background: white;
+  color:grey;
+}

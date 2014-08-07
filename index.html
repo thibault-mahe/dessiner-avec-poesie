@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Drawing with poetry - Les DJinns</title>
+  <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+</head>
+
+<body>
+  <div id='editControls'>
+      <a class='btn' data-role='#e63157' href='#'>rouge</a>
+      <a class='btn' data-role='#235e75' href='#'>bleu</a>
+      <a class='btn' data-role='#ffd56c' href='#'>jaune</a>
+      <a class='btn' data-role='#80ccad' href='#'>vert</a>
+      <a class='btn' data-role='black' href='#'>noir</a>
+      <a class='btn' id="modify" href='#'>Modifier le texte</a>
+      <input class='btn' id="submit" type="submit" value="Sauvegarder"/>
+  </div> <!-- /. #editControls -->
+
+  <p>Cliquez et glissez le curseur pour dessiner le texte. Double-cliquer pour effacer la page.</p>
+
+
+  <canvas id='canvas'></canvas>
+  
+  <span id='nettoyage'>Nettoyé !</span>
+
+  <div id="modal">
+    <div id="select-strophe">Sélectionnez une strophe du poème Les Djins de Victor Hugo</div>
+    <div class="btn-group1">
+      <a class='btn' data-role="letters1" href='#'>1</a>
+      <a class='btn' data-role="letters2" href='#'>2</a>
+      <a class='btn' data-role="letters3" href='#'>3</a>
+      <a class='btn' data-role="letters4" href='#'>4</a>
+      <a class='btn' data-role="letters5" href='#'>5</a>
+      <a class='btn' data-role="letters6" href='#'>6</a>
+      <a class='btn' data-role="letters7" href='#'>7</a>
+      <a class='btn' data-role="letters8" href='#'>8</a>
+      <a class='btn' data-role="letters9" href='#'>9</a>
+      <a class='btn' data-role="letters10" href='#'>10</a>
+      <a class='btn' data-role="letters11" href='#'>11</a>
+      <a class='btn' data-role="letters12" href='#'>12</a>
+      <a class='btn' data-role="letters13" href='#'>13</a>
+      <a class='btn' data-role="letters14" href='#'>14</a>
+      <a class='btn' data-role="letters15" href='#'>15</a>
+    </div>
+  	<div id="pres">Ou proposez votre propre texte : plusieurs phrases sont possibles, mais pas de retour à la ligne ni de texte pré-formaté (copier-coller notamment).</div>
+	  <div id="edit" contenteditable>
+	  	Remplacez-moi par votre message !
+	  </div>
+	  <div class="btn-group2">
+		  <a class='btn' id="delete" href='#'>Annuler</a>
+		  <a class='btn' id="finish" href='#'>Terminer !</a>
+		</div>
+  </div> <!-- /. #modal -->
+
+<script src='js/jquery-1.11.0.min.js'></script>
+<script src="js/Blob.js"></script>
+<script src="js/canvas-toBlob.js"></script>
+<script src="js/FileSaver.js"></script>
+<script src="js/index.js"></script>
+
+</body>
+
+</html>
